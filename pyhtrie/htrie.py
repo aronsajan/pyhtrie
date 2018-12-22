@@ -15,24 +15,25 @@ class Trie(object):
     def index_text(self, keyword, data):
         self.add_text_nodes(self.root_nodes, keyword, data)
 
-
     def add_text_nodes(self, node_children, text, data):
         if len(text) > 0:
+            target_node = None
             if text[0] in node_children:
                 target_node = node_children[text[0]]
-                if len(text)>1:
-                    self.add_text_nodes(target_node.children, text[1:])
-                else:
-                    target_node.add_data(data)
             else:
                 new_node = TrieNode()
-                new_node.add_data(data)
                 if text[0] in self.node_map:
                     self.node_map[text[0]].append(new_node)
                 else:
                     self.node_map[text[0]] = []
                     self.node_map[text[0]].append(new_node)
                 node_children[text[0]] = new_node
+                target_node = new_node
+            if len(text) > 1:
+                self.add_text_nodes(target_node.children, text[1:], data)
+            else:
+                target_node.add_data(data)
+
 
     def prefix_match(self, prefix_text):
         start_node = traverse_to_node(self.root_nodes, prefix_text)
@@ -44,7 +45,10 @@ class Trie(object):
             if pattern_text[0] in self.node_map:
                 starting_node_list = self.node_map[pattern_text[0]]
                 for starting_node in starting_node_list:
-                    target_node = traverse_to_node(starting_node,pattern_text)
+                    if len(pattern_text)>1:
+                        target_node = traverse_to_node(starting_node.children,pattern_text[1:])
+                    else:
+                        target_node = starting_node
                     data_fetched = child_data_collect(target_node)
                     if data_fetched:
                         collected_data = collected_data + data_fetched
