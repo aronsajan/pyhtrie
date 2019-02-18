@@ -1,9 +1,0 @@
-setup.py
-pyhtrie/__init__.py
-pyhtrie/htrie.py
-pyhtrie/test_run.py
-pyhtrie/trie_node.py
-pyhtrie.egg-info/PKG-INFO
-pyhtrie.egg-info/SOURCES.txt
-pyhtrie.egg-info/dependency_links.txt
-pyhtrie.egg-info/top_level.txt
